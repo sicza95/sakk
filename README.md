@@ -1,3 +1,4 @@
+![Image](https://repository-images.githubusercontent.com/411816401/22cba19a-000d-4daa-8a57-9b80bbdb4dd5)
 # Sakktábla feladat
 Készítsetek programot, amelyben létrehozzátok a sakkhoz tartozó osztályokat (sakktábla, bábuk)! 
 
