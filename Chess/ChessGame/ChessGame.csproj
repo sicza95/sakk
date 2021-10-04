@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38699519-96BC-4723-AAED-068CDB76415D}</ProjectGuid>
+    <ProjectGuid>{53E5C5DE-1452-42D7-8331-409A26912130}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Chess</RootNamespace>
-    <AssemblyName>Chess</AssemblyName>
+    <RootNamespace>ChessGame</RootNamespace>
+    <AssemblyName>ChessGame</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,6 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChessBishop.cs" />
+    <Compile Include="ChessKing.cs" />
+    <Compile Include="ChessKnight.cs" />
+    <Compile Include="ChessPawn.cs" />
+    <Compile Include="Chessboard.cs" />
+    <Compile Include="ChessMechanism.cs" />
+    <Compile Include="ChessPiece.cs" />
+    <Compile Include="ChessQueen.cs" />
+    <Compile Include="ChessRook.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
