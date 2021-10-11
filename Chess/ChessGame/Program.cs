@@ -10,10 +10,12 @@ namespace ChessGame
     {
         static void Main(string[] args)
         {
-            Chessboard board = new Chessboard();
-            board.DrawBoard();
+            ChessMechanism chessgame = new ChessMechanism();
+            chessgame.StartGame();
 
             Console.ReadLine();
+
+
 
 
         }

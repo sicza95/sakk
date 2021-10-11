@@ -10,6 +10,7 @@ namespace ChessGame
     {
 		char name;
 		char color;
+		bool enPassant;
 		public ChessPiece(char color)
 		{
 			this.name = ' ';
@@ -17,6 +18,11 @@ namespace ChessGame
 		}
 		public virtual string Name => this.name.ToString();
 		public virtual string Color => this.color.ToString();
+		public virtual bool EnPassant => this.enPassant;
+		public virtual bool MoveSet(int starti, int startj, int endi, int endj, Chessboard currentboard)
+        {
+			return false;
+        }
 
 
 
