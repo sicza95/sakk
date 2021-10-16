@@ -15,19 +15,6 @@ namespace ChessGame
 
             Console.ReadLine();
 
-            /*
-             * 
-            */
-
-
-
-
-
-
-
-
-
-
         }
     }
 }

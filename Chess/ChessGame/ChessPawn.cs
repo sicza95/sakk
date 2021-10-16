@@ -463,15 +463,5 @@ namespace ChessGame
 			return false;
 		}
 
-		/*
-		
-	*/
-
-
-
-
-
-
-
 	}
 }

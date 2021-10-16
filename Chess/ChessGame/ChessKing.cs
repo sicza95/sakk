@@ -651,19 +651,5 @@ namespace ChessGame
 
 		}
 
-		/*
-		
-	*/
-
-
-
-
-
-
-
-
-
-
-
 	}
 }

@@ -452,24 +452,5 @@ namespace ChessGame
             Console.ReadLine();
 		}
 
-		/*
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	}
 }
