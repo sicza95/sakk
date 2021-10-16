@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace ChessGame
 {
@@ -11,8 +6,6 @@ namespace ChessGame
     {
 		public void StartGame()
 		{
-			//ChessKnight knight = new ChessKnight('W');
-			//knight.MoveSet(3, 4,5,5);
 			Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
 			bool endGame = false;
 			Chessboard board = new Chessboard();
@@ -20,7 +13,6 @@ namespace ChessGame
 			int[] temp = new int[4];
 			board.player = "white";
 			board.turnCounter = 1;
-			//Console.WriteLine();
             Console.WriteLine("Type \"exit\" to exit the game.");
 			Console.WriteLine("Type \"save\" to save the state of the game.");
 			Console.WriteLine("Type \"load\" to load a saved game state.");
@@ -40,7 +32,6 @@ namespace ChessGame
 						endGame = true;
 						break;
 					}
-					//Console.WriteLine(board.player);
 					Console.WriteLine($"The {board.player}'s King is in check. You can only make moves to get out of check.");
 				}
 				
@@ -251,11 +242,6 @@ namespace ChessGame
 							}
 							board.turnCounter++;
 						}
-						//Capturing the checking piece, with either the king or another piece.
-
-						//Moving the king to an adjacent square where it is not in check.
-
-						//Blocking the check.
 					}
 					else if (board.CheckCastling(temp[0], temp[1], temp[2], temp[3], board) == true)
                     {
@@ -451,6 +437,5 @@ namespace ChessGame
             Console.WriteLine("To exit, press a button.");
             Console.ReadLine();
 		}
-
 	}
 }

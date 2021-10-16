@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace ChessGame
@@ -610,11 +608,8 @@ namespace ChessGame
                     {
                         if (this.boardFields[i, j].IsFieldUnderAttack(i, j, currentboard) == true)
                         {
-                            //Console.WriteLine("The white king is in check!");
 							return true;
                         }
-                        //Console.WriteLine($"{i}, {j}, {currentboard.boardFields[i,j].IsFieldUnderAttack(i,j,currentboard)}, {currentboard.boardFields[i,j].Name}, {currentboard.boardFields[i, j].Color}");
-                        //Console.WriteLine(currentboard.player);
                         Console.WriteLine("The white king is not in check! So You can move normally.");
 						return false;
                     }
@@ -685,14 +680,10 @@ namespace ChessGame
 					}
 				}
 			}
-            //virtualboard.boardFields[kingLocationi, kingLocationj].IsFieldUnderAttack(kingLocationj, kingLocationj, virtualboard);
-            //moving the king and checking if it will be in check
-            //int kingPossibleMoves = 0;
 
 			if (virtualboard.boardFields[kingLocationi, kingLocationj].MoveSet2(kingLocationi, kingLocationj, virtualboard) == true)
             {
                 Console.WriteLine("király mozoghat");
-                //Console.WriteLine($"{kingLocationi}{kingLocationj}");
 				return false;
             }
             else if (virtualboard.boardFields[kingLocationi, kingLocationj].MoveSet2(kingLocationi, kingLocationj, virtualboard) == false)
@@ -706,25 +697,18 @@ namespace ChessGame
                         {
                             for (int g = 0; g < 64; g++)
                             {
-								//virtualboard.boardFields[kingLocationi, kingLocationj].IsFieldUnderAttack(kingLocationi, kingLocationj, virtualboard);
-								//Console.WriteLine($"{virtualboard.boardFields[i, j].Name}");
 								if ( 0 <= virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 0] && virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 0] <= 7 && 0 <= virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 1] && virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 1] <= 7)
 								{
-									//Console.WriteLine($"{i}{j} - {kingLocationi}{kingLocationj}{virtualboard.boardFields[kingLocationi, kingLocationj].Name} - {virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 0]}{virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 1]}");
 									if (virtualboard.boardFields[i, j].MoveSet(i, j, virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 0], virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 1], virtualboard,false) == true)
 									{
-										//Console.WriteLine("léphet");
 										if (virtualboard.boardFields[kingLocationi, kingLocationj].WillKingBeInCheck(kingLocationi, kingLocationj, virtualboard, i, j, virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 0], virtualboard.boardFields[kingLocationi, kingLocationj].AttackPositions[g, 1]) == false)
 										{
-											//Console.WriteLine("léphet és a király nem lesz sakkban.");
 											Console.WriteLine("A Piece can help the King to Get out of Check! white");
 											return false;
 										}
 									} 
 								}
 							}
-							//Console.WriteLine("A király sakkban marad white");
-							//return true;
 						}
                         else if (virtualboard.boardFields[i, j].Color == "B" && player == "black")
                         {
@@ -743,17 +727,12 @@ namespace ChessGame
 									}
 								}
 							}
-							//Console.WriteLine("A király sakkban marad black");
-							//return true;
 						}
 						
                     }
                 }
             }
-            //moving another piece and checking if the king will be in check
-            //Console.WriteLine("Ez a checkmate vége");
 			return true;
 		}
-
     }
 }

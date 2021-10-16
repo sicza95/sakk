@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessGame
 {
@@ -90,11 +86,8 @@ namespace ChessGame
 						{
 							if (this.WillKingBeInCheck(starti, startj, board, starti, startj, kingPositions[i, 0], kingPositions[i, 1]) == true)
 							{
-                                //Console.WriteLine("b");
 								return false;
 							}
-                            //Console.WriteLine("a");
-							//Console.WriteLine($"{starti}{startj}");
 							return true;
 						}
 					}
@@ -111,13 +104,10 @@ namespace ChessGame
 					}
                     else
                     {
-						//Console.WriteLine($"{board.player}");
-						//Console.WriteLine("hello");
 					}
 				}
 			}
-			//Console.WriteLine("The King can't step here.");
-            //Console.WriteLine("c");
+
 			return false;
 		}
 
@@ -129,9 +119,7 @@ namespace ChessGame
 
 		public override bool WillKingBeInCheck(int fieldi, int fieldj, Chessboard currentboard, int starti, int startj, int endi, int endj)
 		{
-            //Console.WriteLine("willkingbeincheck");
 			Chessboard virtualboard = new Chessboard(currentboard);
-            //Console.WriteLine(this.IsFieldUnderAttack(fieldi, fieldj, virtualboard));
 			if (this.IsFieldUnderAttack(fieldi, fieldj, virtualboard) == true)
             {
 				virtualboard.boardFields[endi, endj] = virtualboard.boardFields[starti, startj];
@@ -157,25 +145,20 @@ namespace ChessGame
 						virtualboard.boardFields[starti, startj] = new ChessPiece('w');    //Black Field
 					}
 				}
-                //Console.WriteLine($"{fieldi}{fieldj} - {starti}{startj} - {endi}{endj}");
                 if (virtualboard.boardFields[fieldi,fieldj].Name == "K")
                 {
 					if (this.IsFieldUnderAttack(fieldi, fieldj, virtualboard) == true)
 					{
-                        //Console.WriteLine("12");
 						return true;
 					}
-                    //Console.WriteLine("13");
 					return false;
 				}
                 else
                 {
 					if (this.IsFieldUnderAttack(endi, endj, virtualboard) == true)
 					{
-                        //Console.WriteLine("14");
 						return true;
 					}
-                    //Console.WriteLine("15");
 					return false;
 				}
                 
@@ -320,15 +303,12 @@ namespace ChessGame
                 {
                     if (0 <= i && i <= 6)
                     {
-                        // horizontal left positions
                         if (i == 0)
                         {
                             if ((board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "R") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                             {
-                                //Console.WriteLine("1");
                                 this.numberOfAttackers++;
                                 this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
                         else
@@ -339,18 +319,15 @@ namespace ChessGame
                                 {
                                     if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("2");
 										middleman = true;
 										this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-                                //Console.WriteLine("3");
                                 if (middleman == false)
                                 {
 									this.numberOfAttackers++;
 								}
                                 this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
                     }
@@ -359,10 +336,8 @@ namespace ChessGame
                         // diagonal left up:
                         if (i == 7 && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "B" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "P") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                         {
-                            //Console.WriteLine("5");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                         else
                         {
@@ -372,18 +347,15 @@ namespace ChessGame
                                 {
                                     if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("6");
 										middleman = true;
 										this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-								//Console.WriteLine("7");
 								if (middleman == false)
 								{
 									this.numberOfAttackers++;
 								}
 								this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
                     }
@@ -392,10 +364,8 @@ namespace ChessGame
                         // vertical up positions:
                         if (i == 14 && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "R") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                         {
-                            //Console.WriteLine("9");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                         else
                         {
@@ -405,18 +375,15 @@ namespace ChessGame
                                 {
                                     if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("10");
 										middleman = true;
                                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-								//Console.WriteLine("11");
 								if (middleman == false)
 								{
 									this.numberOfAttackers++;
 								}
 								this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
                     }
@@ -425,10 +392,8 @@ namespace ChessGame
                         // diagonal right up:
                         if (i == 21 && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "B" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "P") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                         {
-                            //Console.WriteLine("13");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                         else if (21 < i && i <= 27)
                         {
@@ -436,33 +401,27 @@ namespace ChessGame
                             {
                                 for (int g = 21; g < i; g++)
                                 {
-									//Console.WriteLine(board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color);
 									if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("14");
 										middleman = true;
                                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-								//Console.WriteLine("15");
 								if (middleman == false)
 								{
 									this.numberOfAttackers++;
 								}
 								this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
                     }
                     else if (28 <= i && i <= 34)
                     {
-                        // horizontal right positions:
+                        // horizontal right posi
                         if (i == 28 && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "R") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                         {
-                            //Console.WriteLine("17");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                         else
                         {
@@ -472,18 +431,15 @@ namespace ChessGame
                                 {
                                     if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("18");
 										middleman = true;
                                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-								//Console.WriteLine("19");
 								if (middleman == false)
 								{
 									this.numberOfAttackers++;
 								}
 								this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
                     }
@@ -492,10 +448,8 @@ namespace ChessGame
                         // diagonal right down:
                         if (i == 35 && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "B" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "P") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                         {
-                            //Console.WriteLine("21");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                         else
                         {
@@ -505,21 +459,17 @@ namespace ChessGame
                                 {
                                     if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("22");
 										middleman = true;
                                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-								//Console.WriteLine("23");
 								if (middleman == false)
 								{
 									this.numberOfAttackers++;
 								}
 								this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
-                        //Console.WriteLine("24");
                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                     }
                     else if (42 <= i && i <= 48)
@@ -527,10 +477,8 @@ namespace ChessGame
                         // vertical down positions:
                         if (i == 42 && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "R") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                         {
-                            //Console.WriteLine("25");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                         else
                         {
@@ -540,21 +488,17 @@ namespace ChessGame
                                 {
                                     if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("26");
 										middleman = true;
                                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-								//Console.WriteLine("27");
 								if (middleman == false)
 								{
 									this.numberOfAttackers++;
 								}
 								this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
-                        //Console.WriteLine("28");
                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                     }
                     else if (49 <= i && i <= 55)
@@ -562,10 +506,8 @@ namespace ChessGame
                         // diagonal left down:
                         if (i == 49 && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "K" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "Q" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "B" || board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "P") && (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color))
                         {
-                            //Console.WriteLine("29");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                         else
                         {
@@ -575,21 +517,17 @@ namespace ChessGame
                                 {
                                     if (board.boardFields[attackPositions[g, 0], attackPositions[g, 1]].Color == this.Color)
                                     {
-										//Console.WriteLine("30");
 										middleman = true;
                                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                                     }
                                 }
-								//Console.WriteLine("31");
 								if (middleman == false)
 								{
 									this.numberOfAttackers++;
 								}
 								this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                                //return true;
                             }
                         }
-                        //Console.WriteLine("32");
                         this.positionOfAttackers[i, 0] = fieldi; this.positionOfAttackers[i, 1] = fieldj;
                     }
                     else if (56 <= i && i <= 63)
@@ -597,59 +535,38 @@ namespace ChessGame
                         // the knight positions:
                         if (board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Name == "N" && board.boardFields[attackPositions[i, 0], attackPositions[i, 1]].Color != this.Color)
                         {
-                            //Console.WriteLine("33");
                             this.numberOfAttackers++;
                             this.positionOfAttackers[i, 0] = attackPositions[i, 0]; this.positionOfAttackers[i, 1] = attackPositions[i, 1];
-                            //return true;
                         }
                     }
-                    //Console.WriteLine($"35 - {i}");
                 }
                 else
                 {
-                    //Console.WriteLine("tömb határán kívül");
                 }
             }
             if (this.numberOfAttackers > 0)
 			{
-				
-				//Console.WriteLine("A támadók száma: " + this.numberOfAttackers);
-				//int seged = 0;
 				for (int i = 0; i < 64; i++)
 				{
                     if (this.positionOfAttackers[i, 0] != fieldi && this.positionOfAttackers[i,1] != fieldj)
 					{
-                        //for (int g = seged; g <= i; g++)
-                        //{
-
-                        //}
-						//this.checkableFields[i, 0] = this.positionOfAttackers[i, 0]; this.checkableFields[i, 1] = this.positionOfAttackers[i, 1];
 					}
-					//Console.WriteLine($"A támadók helye: {this.positionOfAttackers[i, 0]}{this.positionOfAttackers[i, 1]}");
 				}
 				for (int i = 0; i < 64; i++)
 				{
-					//Console.WriteLine($"{attackPositions[i, 0]}{attackPositions[i, 1]}");
 				}
 				return true;
 			}
             else
             {
-				//Console.WriteLine("36");
-				//Console.WriteLine("A támadók száma: " + this.numberOfAttackers);
                 for (int i = 0; i < 64; i++)
                 {
-					//Console.WriteLine($"A támadók helye: {this.positionOfAttackers[i,0]}{this.positionOfAttackers[i,1]}");
 				}
 				for (int i = 0; i < 64; i++)
 				{
-					//Console.WriteLine($"{attackPositions[i, 0]}{attackPositions[i, 1]}");
 				}
 				return false;
 			}
-            
-
 		}
-
 	}
 }
