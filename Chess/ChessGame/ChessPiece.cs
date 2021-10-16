@@ -515,32 +515,8 @@ namespace ChessGame
 			return false;
 		}
 
-
-
 		/*
-		class CAPiece
-		{
-			public:
-	CAPiece(char cColor) : mcColor(cColor) { }
-			~CAPiece() { }
-			virtual char GetPiece() = 0;
-	char GetColor()
-			{
-				return mcColor;
-			}                    //IsLegalMoive: Checks that is the destination empty or of the opposite color, than calls AreSquaresLegal
-			bool IsLegalMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8])
-			{
-				CAPiece* qpDest = qpaaBoard[iDestRow][iDestCol];
-				if ((qpDest == 0) || (mcColor != qpDest->GetColor()))
-				{
-					return AreSquaresLegal(iSrcRow, iSrcCol, iDestRow, iDestCol, qpaaBoard);
-				}
-				return false;
-			}
-			private:            //AreSquaresLegal: virtual function, overriden for each class, to check that the source and destination indicate a legitimate move for that particular piece type.
-	virtual bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) = 0;
-	char mcColor;
-		};
+		
 		*/
 
 

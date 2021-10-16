@@ -443,7 +443,7 @@ namespace ChessGame
                             {
                                 if ((this.boardFields[7, 5].Color == "w" || this.boardFields[7, 5].Color == "b") && (this.boardFields[7, 6].Color == "w" || this.boardFields[7, 6].Color == "b"))
                                 {
-                                    if (/*this.boardFields[starti, startj].IsKingInCheck() == false*/ this.IsKingInCheck(currentboard, "white") == false)
+                                    if ( this.IsKingInCheck(currentboard, "white") == false)
                                     {
 										if (this.boardFields[starti, startj].WillKingBeInCheck(starti, startj, currentboard, starti, startj, endi, endj) == false)
 										{
@@ -482,11 +482,11 @@ namespace ChessGame
 							{
 								if ((this.boardFields[7, 1].Color == "w" || this.boardFields[7, 1].Color == "b") && (this.boardFields[7, 2].Color == "w" || this.boardFields[7, 2].Color == "b") && (this.boardFields[7, 3].Color == "w" || this.boardFields[7, 3].Color == "b"))
 								{
-									if (/*this.boardFields[starti, startj].IsKingInCheck() == false*/ this.IsKingInCheck(currentboard, "white") == false)
+									if ( this.IsKingInCheck(currentboard, "white") == false)
 									{
 										if (this.boardFields[starti, startj].WillKingBeInCheck(starti, startj, currentboard, starti, startj, endi, endj) == false)
 										{
-                                            if (/*this.boardFields[7, 1].IsFieldUnderAttack(7, 1, currentboard) == false &&*/ this.boardFields[7, 2].IsFieldUnderAttack(7, 2, currentboard) == false && this.boardFields[7, 3].IsFieldUnderAttack(7, 3, currentboard) == false )
+                                            if ( this.boardFields[7, 2].IsFieldUnderAttack(7, 2, currentboard) == false && this.boardFields[7, 3].IsFieldUnderAttack(7, 3, currentboard) == false )
                                             {
 												return true;
                                             }
@@ -525,7 +525,7 @@ namespace ChessGame
 							{
 								if ((this.boardFields[0, 5].Color == "w" || this.boardFields[0, 5].Color == "b") && (this.boardFields[0, 6].Color == "w" || this.boardFields[0, 6].Color == "b"))
 								{
-									if (/*this.boardFields[starti, startj].IsKingInCheck() == false*/ this.IsKingInCheck(currentboard, "black") == false)
+									if (this.IsKingInCheck(currentboard, "black") == false)
 									{
 										if (this.boardFields[starti, startj].WillKingBeInCheck(starti, startj, currentboard, starti, startj, endi, endj) == false)
 										{
@@ -564,11 +564,11 @@ namespace ChessGame
 							{
 								if ((this.boardFields[0, 1].Color == "w" || this.boardFields[0, 1].Color == "b") && (this.boardFields[0, 2].Color == "w" || this.boardFields[0, 2].Color == "b") && (this.boardFields[0, 3].Color == "w" || this.boardFields[0, 3].Color == "b"))
 								{
-									if (/*this.boardFields[starti, startj].IsKingInCheck() == false*/ this.IsKingInCheck(currentboard,"black") == false)
+									if (this.IsKingInCheck(currentboard,"black") == false)
 									{
 										if (this.boardFields[starti, startj].WillKingBeInCheck(starti,startj,currentboard,starti,startj,endi,endj) == false)
 										{
-                                            if (/*this.boardFields[0, 1].IsFieldUnderAttack(0, 1, currentboard) == false &&*/ this.boardFields[0, 2].IsFieldUnderAttack(0, 2, currentboard) == false && this.boardFields[0, 3].IsFieldUnderAttack(0, 3, currentboard) == false )
+                                            if ( this.boardFields[0, 2].IsFieldUnderAttack(0, 2, currentboard) == false && this.boardFields[0, 3].IsFieldUnderAttack(0, 3, currentboard) == false )
                                             {
 												return true;
                                             }
@@ -755,228 +755,7 @@ namespace ChessGame
 			return true;
 		}
 
-
-
-
-
-
-
-
-
-
-
 			/*
-
-			class CBoard
-			{
-				public:
-		CBoard()
-				{                                     //Default Board constructor array initial value is 0,0
-					for (int iRow = 0; iRow < 8; ++iRow)
-					{
-						for (int iCol = 0; iCol < 8; ++iCol)
-						{
-							mqpaaBoard[iRow][iCol] = 0;
-						}
-					}
-					// Allocate and place black pieces            //Dynamically allocates Pieces on the Board (Black Pieces)
-					for (int iCol = 0; iCol < 8; ++iCol)
-					{
-						mqpaaBoard[6][iCol] = new CPawn('B');
-					}
-					mqpaaBoard[7][0] = new CRook('B');
-					mqpaaBoard[7][1] = new CKnight('B');
-					mqpaaBoard[7][2] = new CBishop('B');
-					mqpaaBoard[7][3] = new CKing('B');
-					mqpaaBoard[7][4] = new CQueen('B');
-					mqpaaBoard[7][5] = new CBishop('B');
-					mqpaaBoard[7][6] = new CKnight('B');
-					mqpaaBoard[7][7] = new CRook('B');
-					// Allocate and place white pieces            //Dynamically allocates Pieces on the Board (White Pieces)
-					for (int iCol = 0; iCol < 8; ++iCol)
-					{
-						mqpaaBoard[1][iCol] = new CPawn('W');
-					}
-					mqpaaBoard[0][0] = new CRook('W');
-					mqpaaBoard[0][1] = new CKnight('W');
-					mqpaaBoard[0][2] = new CBishop('W');
-					mqpaaBoard[0][3] = new CKing('W');
-					mqpaaBoard[0][4] = new CQueen('W');
-					mqpaaBoard[0][5] = new CBishop('W');
-					mqpaaBoard[0][6] = new CKnight('W');
-					mqpaaBoard[0][7] = new CRook('W');        //----
-				}
-				~CBoard()
-				{                                    //Allocated by the desctructor when the game is over.
-					for (int iRow = 0; iRow < 8; ++iRow)
-					{
-						for (int iCol = 0; iCol < 8; ++iCol)
-						{
-							delete mqpaaBoard[iRow][iCol];
-							mqpaaBoard[iRow][iCol] = 0;
-						}
-					}
-				}
-
-				void Print()
-				{                                             //this whole thing Prints the board to the Console:
-					using namespace std;
-			const int kiSquareWidth = 4;
-		const int kiSquareHeight = 3;
-			for (int iRow = 0; iRow< 8*kiSquareHeight; ++iRow) {
-				int iSquareRow = iRow / kiSquareHeight;
-				// Print side border with numbering                          //Side Numbering
-				if (iRow % 3 == 1) {
-					cout << '-' << (char) ('1' + 7 - iSquareRow) << '-';
-				} else {
-					cout << "---";
-				}
-	// Print the chess board                                         //The actual Board
-	for (int iCol = 0; iCol < 8 * kiSquareWidth; ++iCol)
-	{
-		int iSquareCol = iCol / kiSquareWidth;
-		if (((iRow % 3) == 1) && ((iCol % 4) == 1 || (iCol % 4) == 2) && mqpaaBoard[7 - iSquareRow][iSquareCol] != 0)
-		{
-			if ((iCol % 4) == 1)
-			{
-				cout << mqpaaBoard[7 - iSquareRow][iSquareCol]->GetColor();         //GetColor function: Outputs "B" or "W" and
-			}
-			else
-			{
-				cout << mqpaaBoard[7 - iSquareRow][iSquareCol]->GetPiece();         //GetPiece(): gives the piece type:
-			}                                                                     //   "P" "B" "Q" "N" "R" "K"
-		}
-		else
-		{
-			if ((iSquareRow + iSquareCol) % 2 == 1)
-			{                      //  Black an White squares '*' - white ' ' - black
-				cout << '*';
-			}
-			else
-			{
-				cout << ' ';
-			}
-		}
-	}
-	cout << endl;
-			}
-			// Print the bottom border with numbers                               //Bottom Numbering
-			for (int iRow = 0; iRow < kiSquareHeight; ++iRow)
-	{
-		if (iRow % 3 == 1)
-		{
-			cout << "---";
-			for (int iCol = 0; iCol < 8 * kiSquareWidth; ++iCol)
-			{
-				int iSquareCol = iCol / kiSquareWidth;
-				if ((iCol % 4) == 1)
-				{
-					cout << (iSquareCol + 1);
-				}
-				else
-				{
-					cout << '-';
-				}
-			}
-			cout << endl;
-		}
-		else
-		{
-			for (int iCol = 1; iCol < 9 * kiSquareWidth; ++iCol)
-			{
-				cout << '-';
-			}
-			cout << endl;
-		}
-	}
-		}
-
-		bool IsInCheck(char cColor)
-	{      //Finds the location of the King of the given color, runs over                                                                        //the entire board to see whether any pieces of the opposite color can take the king.
-		   // Find the king
-		int iKingRow;
-		int iKingCol;
-		for (int iRow = 0; iRow < 8; ++iRow)
-		{
-			for (int iCol = 0; iCol < 8; ++iCol)
-			{
-				if (mqpaaBoard[iRow][iCol] != 0)
-				{
-					if (mqpaaBoard[iRow][iCol]->GetColor() == cColor)
-					{
-						if (mqpaaBoard[iRow][iCol]->GetPiece() == 'K')
-						{
-							iKingRow = iRow;
-							iKingCol = iCol;
-						}
-					}
-				}
-			}
-		}
-		// Run through the opponent's pieces and see if any can take the king
-		for (int iRow = 0; iRow < 8; ++iRow)
-		{
-			for (int iCol = 0; iCol < 8; ++iCol)
-			{
-				if (mqpaaBoard[iRow][iCol] != 0)
-				{
-					if (mqpaaBoard[iRow][iCol]->GetColor() != cColor)
-					{
-						if (mqpaaBoard[iRow][iCol]->IsLegalMove(iRow, iCol, iKingRow, iKingCol, mqpaaBoard))
-						{
-							return true;
-						}
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	bool CanMove(char cColor)
-	{
-		// Run through all pieces
-		for (int iRow = 0; iRow < 8; ++iRow)
-		{
-			for (int iCol = 0; iCol < 8; ++iCol)
-			{
-				if (mqpaaBoard[iRow][iCol] != 0)
-				{
-					// If it is a piece of the current player, see if it has a legal move
-					if (mqpaaBoard[iRow][iCol]->GetColor() == cColor)
-					{     //CanMove runs over all the board's squares to 
-						  //find each piece of the current players color and than runs over all the square of the board to check whether any move with this piece is legal and does not lead the current player in check
-						for (int iMoveRow = 0; iMoveRow < 8; ++iMoveRow)
-						{
-							for (int iMoveCol = 0; iMoveCol < 8; ++iMoveCol)
-							{
-								if (mqpaaBoard[iRow][iCol]->IsLegalMove(iRow, iCol, iMoveRow, iMoveCol, mqpaaBoard))
-								{
-									// Make move and check whether king is in check
-									CAPiece* qpTemp = mqpaaBoard[iMoveRow][iMoveCol];
-									mqpaaBoard[iMoveRow][iMoveCol] = mqpaaBoard[iRow][iCol];
-									mqpaaBoard[iRow][iCol] = 0;
-									bool bCanMove = !IsInCheck(cColor);
-									// Undo the move
-									mqpaaBoard[iRow][iCol] = mqpaaBoard[iMoveRow][iMoveCol];
-									mqpaaBoard[iMoveRow][iMoveCol] = qpTemp;
-									if (bCanMove)
-									{
-										return true;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	CAPiece* mqpaaBoard[8][8];     // the board's data 8*8 array that points to (class) Pieces.
-	};
 
 	*/
 
