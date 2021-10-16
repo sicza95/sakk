@@ -17,6 +17,26 @@ namespace ChessGame
 
 
 
+            /*
+
+
+            int main()
+            {
+                CChess qGame;  //Chess game object (class) variable call constructor
+                qGame.Start(); //starts the game
+                return 0;
+            }
+
+            */
+
+
+
+
+
+
+
+
+
 
         }
     }

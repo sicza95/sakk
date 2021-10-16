@@ -20,7 +20,7 @@ namespace ChessGame
 			int[] temp = new int[4];
 			board.player = "white";
 			board.turnCounter = 1;
-			Console.WriteLine();
+			//Console.WriteLine();
             Console.WriteLine("Type \"exit\" to exit the game.");
 			Console.WriteLine("Type \"save\" to save the state of the game.");
 			Console.WriteLine("Type \"load\" to load a saved game state.");
@@ -28,9 +28,22 @@ namespace ChessGame
 			Console.WriteLine("Type \"player\" to get which player has the current turn.");
 			Console.WriteLine("Type \"turn\" to get how many steps have been made during the game.");
             Console.WriteLine("Type \"info\" to get this help list.");
+            Console.WriteLine();
 
 			while (endGame == false)
             {
+				if (board.IsKingInCheck(board, board.player) == true)
+				{
+					if (board.IsCheckMate(board, board.player) == true)
+					{
+						Console.WriteLine("Checkmate! The Game Is Over!");
+						endGame = true;
+						break;
+					}
+					//Console.WriteLine(board.player);
+					Console.WriteLine($"The {board.player}'s King is in check. You can only make moves to get out of check.");
+				}
+				
 				bool validInputStart = false;
 				while (validInputStart == false)
 				{
@@ -150,109 +163,284 @@ namespace ChessGame
 				}
                 else
                 {
-					
-					if (board.CheckEnPassant(temp[0], temp[1], temp[2], temp[3]) == true)
+                    if (board.IsKingInCheck(board,board.player) == true)
                     {
-						board.boardFields[temp[2], temp[3]] = board.boardFields[temp[0], temp[1]];
-						if (temp[0] % 2 == 0)
+						if (board.boardFields[temp[0], temp[1]].Name != "K" && board.WillKingBeInCheck(temp[0], temp[1], temp[2], temp[3], board, board.player) == true)
 						{
-							if (temp[1] % 2 == 0)
+                            Console.WriteLine("You can't move there, because the King still would be in check!");
+						}
+						else if (board.boardFields[temp[0], temp[1]].Name != "K" && board.WillKingBeInCheck(temp[0], temp[1], temp[2], temp[3], board, board.player) == false)
+						{
+							board.boardFields[temp[2], temp[3]] = board.boardFields[temp[0], temp[1]];
+							if (temp[0] % 2 == 0)
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //White field
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //Black Field
+								}
 							}
 							else
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //Black Field
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //Black Field
+								}
 							}
-						}
-						else
-						{
-							if (temp[1] % 2 == 0)
+							board.DrawBoard();
+							Console.WriteLine($"The {board.player} King got out of Check!");
+							board.Log(board.turnCounter);
+							//Change Player:
+							if (board.player == "white")
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //White field
+								board.player = "black";
+							}
+							else if (board.player == "black")
+							{
+								board.player = "white";
+							}
+							board.turnCounter++;
+						}
+						else if (board.boardFields[temp[0],temp[1]].Name == "K" && board.WillKingBeInCheck(temp[0], temp[1], temp[2], temp[3], board, board.player) == true)
+                        {
+                            Console.WriteLine("The King can't move there, or it still would be in Check!");
+                        }
+						else if (board.boardFields[temp[0], temp[1]].Name == "K" && board.WillKingBeInCheck(temp[0], temp[1], temp[2], temp[3], board, board.player) == false)
+						{
+							board.boardFields[temp[2], temp[3]] = board.boardFields[temp[0], temp[1]];
+							if (temp[0] % 2 == 0)
+							{
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //Black Field
+								}
 							}
 							else
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //Black Field
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //Black Field
+								}
 							}
+							board.DrawBoard();
+							Console.WriteLine($"The {board.player} King got out of Check!");
+							board.Log(board.turnCounter);
+							//Change Player:
+							if (board.player == "white")
+							{
+								board.player = "black";
+							}
+							else if (board.player == "black")
+							{
+								board.player = "white";
+							}
+							board.turnCounter++;
 						}
+						//Capturing the checking piece, with either the king or another piece.
 
-						if (board.takenPawnPositioni % 2 == 0)
+						//Moving the king to an adjacent square where it is not in check.
+
+						//Blocking the check.
+					}
+					else if (board.CheckCastling(temp[0], temp[1], temp[2], temp[3], board) == true)
+                    {
+						if (board.WillKingBeInCheck(temp[0], temp[1], temp[2], temp[3], board, board.player) == true)
 						{
-							if (board.takenPawnPositionj % 2 == 0)
-							{
-								board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('w');    //White field
-							}
-							else
-							{
-								board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('b');    //Black Field
-							}
+							Console.WriteLine($"Move can not be made, becasue The {board.player}'s King would be in Check.");
 						}
 						else
 						{
-							if (board.takenPawnPositionj % 2 == 0)
+							board.boardFields[temp[2], temp[3]] = board.boardFields[temp[0], temp[1]];
+							if (temp[0] % 2 == 0)
 							{
-								board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('b');    //White field
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //Black Field
+								}
 							}
 							else
 							{
-								board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('w');    //Black Field
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //Black Field
+								}
 							}
+
+							if (temp[2] == 7 && temp[3] == 6)   //white - right
+							{
+								board.boardFields[7, 5] = board.boardFields[7, 7];
+								board.boardFields[7, 7] = new ChessPiece('w');
+							}
+							else if (temp[2] == 7 && temp[3] == 2)  //white - left
+							{
+								board.boardFields[7, 3] = board.boardFields[7, 0];
+								board.boardFields[7, 0] = new ChessPiece('b');
+							}
+							else if (temp[2] == 0 && temp[3] == 6)  //black - right
+							{
+								board.boardFields[0, 5] = board.boardFields[0, 7];
+								board.boardFields[0, 7] = new ChessPiece('b');
+							}
+							else if (temp[2] == 0 && temp[3] == 2)  //black - left
+							{
+								board.boardFields[0, 3] = board.boardFields[0, 0];
+								board.boardFields[0, 0] = new ChessPiece('w');
+							}
+
+							board.DrawBoard();
+							Console.WriteLine("A \"Castling\" Move has been made!");
+							board.Log(board.turnCounter);
+							//Change Player:
+							if (board.player == "white")
+							{
+								board.player = "black";
+							}
+							else if (board.player == "black")
+							{
+								board.player = "white";
+							}
+							board.turnCounter++;
 						}
-						board.CheckPawnPromotion(temp[2], temp[3]);
-						board.DrawBoard();
-                        Console.WriteLine($"{board.takenPawnPositioni},{board.takenPawnPositionj}");
-						Console.WriteLine("An \"En Passant\" Move has been made!");
-						board.Log(board.turnCounter);
-						//Change Player:
-						if (board.player == "white")
-						{
-							board.player = "black";
-						}
-						else if (board.player == "black")
-						{
-							board.player = "white";
-						}
-						board.turnCounter++;
 					}
-					else if (board.boardFields[temp[0], temp[1]].MoveSet(temp[0], temp[1], temp[2], temp[3], board) == true)
+					else if (board.CheckEnPassant(temp[0], temp[1], temp[2], temp[3]) == true)
+                    {
+						if (board.WillKingBeInCheck(temp[0], temp[1], temp[2], temp[3], board, board.player) == true)
+						{
+							Console.WriteLine($"Move can not be made, becasue The {board.player}'s King would be in Check.");
+						}
+						else
+						{
+							board.boardFields[temp[2], temp[3]] = board.boardFields[temp[0], temp[1]];
+							if (temp[0] % 2 == 0)
+							{
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //Black Field
+								}
+							}
+							else
+							{
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //Black Field
+								}
+							}
+
+							if (board.takenPawnPositioni % 2 == 0)
+							{
+								if (board.takenPawnPositionj % 2 == 0)
+								{
+									board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('w');    //White field
+								}
+								else
+								{
+									board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('b');    //Black Field
+								}
+							}
+							else
+							{
+								if (board.takenPawnPositionj % 2 == 0)
+								{
+									board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('b');    //White field
+								}
+								else
+								{
+									board.boardFields[board.takenPawnPositioni, board.takenPawnPositionj] = new ChessPiece('w');    //Black Field
+								}
+							}
+							board.CheckPawnPromotion(temp[2], temp[3]);
+							board.DrawBoard();
+							Console.WriteLine($"{board.takenPawnPositioni},{board.takenPawnPositionj}");
+							Console.WriteLine("An \"En Passant\" Move has been made!");
+							board.Log(board.turnCounter);
+							//Change Player:
+							if (board.player == "white")
+							{
+								board.player = "black";
+							}
+							else if (board.player == "black")
+							{
+								board.player = "white";
+							}
+							board.turnCounter++;
+						}
+					}
+					else if (board.boardFields[temp[0], temp[1]].MoveSet(temp[0], temp[1], temp[2], temp[3], board,true) == true)
 					{
-						board.boardFields[temp[2], temp[3]] = board.boardFields[temp[0], temp[1]];
-                        if (temp[0] % 2 == 0)
-                        {
-							if (temp[1] % 2 == 0)
+						if (board.WillKingBeInCheck(temp[0], temp[1], temp[2], temp[3], board, board.player) == true)
+						{
+							Console.WriteLine($"Move can not be made, becasue The {board.player}'s King would be in Check.");
+						}
+						else
+						{
+							board.boardFields[temp[2], temp[3]] = board.boardFields[temp[0], temp[1]];
+							if (temp[0] % 2 == 0)
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //White field
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //Black Field
+								}
 							}
 							else
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //Black Field
+								if (temp[1] % 2 == 0)
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //White field
+								}
+								else
+								{
+									board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //Black Field
+								}
 							}
-						}
-                        else
-                        {
-							if (temp[1] % 2 == 0)
+							board.CheckPawnPromotion(temp[2], temp[3]);
+							board.DrawBoard();
+							board.Log(board.turnCounter);
+							//Change Player:
+							if (board.player == "white")
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('b');    //White field
+								board.player = "black";
 							}
-							else
+							else if (board.player == "black")
 							{
-								board.boardFields[temp[0], temp[1]] = new ChessPiece('w');    //Black Field
+								board.player = "white";
 							}
+							board.turnCounter++;
 						}
-						board.CheckPawnPromotion(temp[2],temp[3]);
-						board.DrawBoard();
-						board.Log(board.turnCounter);
-						//Change Player:
-						if (board.player == "white")
-						{
-							board.player = "black";
-						}
-						else if (board.player == "black")
-						{
-							board.player = "white";
-						}
-						board.turnCounter++;
 					}
 					else
 					{
@@ -260,6 +448,8 @@ namespace ChessGame
 					}
                 }
 			}
+            Console.WriteLine("To exit, press a button.");
+            Console.ReadLine();
 			/*
 			int start = int.Parse(Console.ReadLine());
 			int temp[]
@@ -271,6 +461,130 @@ namespace ChessGame
 		}
 
         
+
+
+
+
+
+		/*
+
+		class CChess
+		{
+			public:
+	CChess() : mcPlayerTurn('W') { }    //Constructor, white moves first
+			~CChess() { }                       //Default constructor for the Board
+
+			void Start()
+			{                     //Start function: Begin main game loop, 
+				do
+				{
+					GetNextMove(mqGameBoard.mqpaaBoard); //Get Next Move. when exits, alternate turn is next.
+					AlternateTurn();                     // Switch Alternate Players turn
+				} while (!IsGameOver());              //Check for checkmate or stellmate
+				mqGameBoard.Print();                  //Prints the board.
+			}
+
+			void GetNextMove(CAPiece* qpaaBoard[8][8])
+			{               //The Get Next Move function: Works while b is vali move!
+				using namespace std;
+		bool bValidMove = false;
+		do {
+			mqGameBoard.Print();                         //Prints the board.
+
+			// Get input and convert to coordinates
+			cout << mcPlayerTurn << "'s Move: ";
+			int iStartMove;
+	cin >> iStartMove;
+			int iStartRow = (iStartMove / 10) - 1;
+	int iStartCol = (iStartMove % 10) - 1;
+
+	cout << "To: ";
+			int iEndMove;
+	cin >> iEndMove;
+			int iEndRow = (iEndMove / 10) - 1;
+	int iEndCol = (iEndMove % 10) - 1;
+
+			// Check that the indices are in range
+			// and that the source and destination are different
+			if ((iStartRow >= 0 && iStartRow <= 7) &&
+				(iStartCol >= 0 && iStartCol <= 7) &&
+				(iEndRow >= 0 && iEndRow <= 7) &&
+				(iEndCol >= 0 && iEndCol <= 7)) {
+				// Additional checks in here
+				CAPiece* qpCurrPiece = qpaaBoard[iStartRow][iStartCol];
+				// Check that the piece is the correct color
+				if ((qpCurrPiece != 0) && (qpCurrPiece->GetColor() == mcPlayerTurn)) {
+					// Check that the destination is a valid destination
+					if (qpCurrPiece->IsLegalMove(iStartRow, iStartCol, iEndRow, iEndCol, qpaaBoard)) {
+						// Make the move
+						CAPiece* qpTemp = qpaaBoard[iEndRow][iEndCol];
+	qpaaBoard[iEndRow][iEndCol]		= qpaaBoard[iStartRow][iStartCol];
+						qpaaBoard[iStartRow][iStartCol]	= 0;
+						// Make sure that the current player is not in check
+						if (!mqGameBoard.IsInCheck(mcPlayerTurn)) {
+							delete qpTemp;
+	bValidMove = true;
+						} else { // Undo the last move
+							qpaaBoard[iStartRow][iStartCol] = qpaaBoard[iEndRow][iEndCol];
+							qpaaBoard[iEndRow][iEndCol]		= qpTemp;
+						}
+					}
+				}
+			}
+			if (!bValidMove)
+{
+	cout << "Invalid Move!" << endl;
+}
+		} while (!bValidMove) ;
+	}
+
+	void AlternateTurn()
+{
+	mcPlayerTurn = (mcPlayerTurn == 'W') ? 'B' : 'W';     //Swaps the color of the current player's turn.
+}
+
+bool IsGameOver()
+{
+	// Check that the current player can move
+	// If not, we have a stalemate or checkmate
+	bool bCanMove(false);
+bCanMove = mqGameBoard.CanMove(mcPlayerTurn);     //Calls CanMove to determine that the current player
+												  //has moves which will not put his king into check.
+												  // If CanMove returns false the current player has no moveset will not put him in check
+if (!bCanMove)
+{
+	if (mqGameBoard.IsInCheck(mcPlayerTurn))
+	{   //We test wether he is currently in check or not, if he is in check
+		AlternateTurn();                         // It is "CheckMate" otherwise it is "StaleMate"
+		std::cout << "Checkmate, " << mcPlayerTurn << " Wins!" << std::endl;
+	}
+	else
+	{
+		std::cout << "Stalemate!" << std::endl;
+	}
+}
+return !bCanMove;
+	}
+private:
+	CBoard mqGameBoard;    //Chess class data  the game board (class) variable call constructor
+char mcPlayerTurn;     //Chess class data  the current players turn (char) variable / mcPlayerTurn = "W" or "B"
+};
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	}
