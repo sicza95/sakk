@@ -16,6 +16,9 @@ namespace Chess
 
         public string Color { get; private set; }
 
+        public bool IsActive => Board.Row == RowIndex && Board.Col == ColIndex;
+        public bool IsOver => Board.ORow == RowIndex && Board.OCol == ColIndex;
+
         public ChessPiece Piece { get; set; }
 
         public Cell(int rowIndex, int colIndex)

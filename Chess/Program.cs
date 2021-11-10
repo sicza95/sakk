@@ -14,43 +14,67 @@ namespace Chess
 
             Board board = new Board();
 
-            Console.WriteLine("Press ESC to stop");
+            Board.DrawRules();
 
-            ConsoleKey key = Console.ReadKey().Key;
+            ConsoleKey key;
 
             do
             {
-                while (!Console.KeyAvailable && key != ConsoleKey.Escape)
+                key = Console.ReadKey().Key;
+
+                if (key == ConsoleKey.UpArrow)
                 {
-                    key = Console.ReadKey().Key;
-                    if (key == ConsoleKey.UpArrow)
-                    {
-                        Board.row--;
-                        board.Draw();
-                    }
+                    if (Box.isActive) Board.ORow--;
+                    else Board.Row--;
+                }
 
-                    if (key == ConsoleKey.DownArrow)
-                    {
-                        Board.row++;
-                        board.Draw();
-                    }
+                if (key == ConsoleKey.DownArrow)
+                {
+                    if (Box.isActive) Board.ORow++;
+                    else Board.Row++;
+                }
 
-                    if (key == ConsoleKey.LeftArrow)
-                    {
-                        Board.col--;
-                        board.Draw();
-                    }
+                if (key == ConsoleKey.LeftArrow)
+                {
+                    if (Box.isActive) Board.OCol--;
+                    else Board.Col--;
+                }
 
-                    if (key == ConsoleKey.RightArrow)
+                if (key == ConsoleKey.RightArrow)
+                {
+                    if (Box.isActive) Board.OCol++;
+                    else Board.Col++;
+                }
+
+                if (key == ConsoleKey.Enter)
+                {
+                    if (false == Box.isActive) Box.IsActive = true;
+                    else 
                     {
-                        Board.col++;
-                        board.Draw();
+                        board.GetOverCell().Piece = board.GetActiveCell().Piece;
+
+                        board.GetActiveCell().Piece = null;
+
+                        Box.IsActive = false;
+                        Board.Row = Board.ORow;
+                        Board.Col = Board.OCol;
                     }
                 }
+
+                if (key == ConsoleKey.Backspace)
+                {
+                    Box.IsActive = false;
+                }
+
+                if (!Box.isActive)
+                {
+                    Board.ORow = Board.Row;
+                    Board.OCol = Board.Col;
+                }
+
+                board.Draw();
+
             } while (key != ConsoleKey.Escape);
-
-
-            Console.ReadKey();
         }
     }
 }

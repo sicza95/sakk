@@ -8,7 +8,6 @@ namespace Chess
 {
     class Box
     {
-
         private static string rowNames = "87654321";
         private static string colNames = "ABCDEFGH";
 
@@ -20,20 +19,15 @@ namespace Chess
         private static ConsoleColor pieceColor;
         private static ConsoleColor foreColor;
 
-        private static string FocusIndicator
-        {
-            get
-            {
-                return Board.row == r && Board.col == c ? "ooo" : "   ";
-            }
-        }
-        private static string HoverIndicator
-        {
-            get
-            {
-                return null != p && p.MoveSet.Contains($"{r}{c}") ? "xxx" : "   ";
-            }
-        }
+        public static bool isActive = false;
+
+        private static bool IsOOver => Board.ORow == r && Board.OCol == c;
+
+        private static bool IsOver => Board.Row == r && Board.Col == c;
+
+        public static bool IsActive { get => IsOver && isActive; set => isActive = value; }
+
+        private static bool IsUnderAttack => null != p && p.MoveSet.Contains($"{r}{c}");
 
         private static void SetBc(ConsoleColor color)
         {
@@ -59,6 +53,8 @@ namespace Chess
             SetFc(foreColor);
             SetBc(backColor);
 
+            SetIndicators();
+
             if (colIndex == 0) 
                 DrawTopRow(rowNames[r].ToString());
             else 
@@ -82,39 +78,32 @@ namespace Chess
             SetFc(ConsoleColor.White);
         }
 
+        private static void SetIndicators() {
+            if (IsOver) SetBc(ConsoleColor.DarkCyan);
+            if (IsOOver) SetBc(ConsoleColor.Red);
+            if (IsActive) SetBc(ConsoleColor.DarkRed);
+            if (IsUnderAttack) SetBc(ConsoleColor.Cyan);
+        }
+
         private static void DrawTopRow() {
-            Console.Write(" ");
-            SetFc(ConsoleColor.Red);
-            Console.Write(FocusIndicator);
-            SetFc(foreColor);
-            Console.Write(" ");
+            DrawRow();
         }
         private static void DrawTopRow(string val)
         {
             SetFc(ConsoleColor.Black);
-            Console.Write(val);
-            SetFc(ConsoleColor.Red);
-            Console.Write(FocusIndicator);
+            Console.Write($@"{val}    ");
             SetFc(foreColor);
-            Console.Write(" ");
         }
 
         private static void DrawBottomRow()
         {
-            Console.Write(" ");
-            SetFc(ConsoleColor.Red);
-            Console.Write(HoverIndicator);
-            SetFc(foreColor);
-            Console.Write(" ");
+            DrawRow();
         }
         private static void DrawBottomRow(string val)
         {
             SetFc(ConsoleColor.Black);
-            Console.Write(val);
-            SetFc(ConsoleColor.Red);
-            Console.Write(HoverIndicator);
+            Console.Write($@"{val}    ");
             SetFc(foreColor);
-            Console.Write(" ");
         }
 
         private static void DrawRow()
@@ -124,9 +113,12 @@ namespace Chess
         private static void DrawRow(ChessPiece piece)
         {
             Console.Write(" ");
-            Console.BackgroundColor = pieceColor;
-            Console.Write(" " + piece.Name + " ");
-            Console.BackgroundColor = backColor;
+            SetBc(pieceColor);
+            Console.Write($@" {piece.Name} ");
+            SetBc(backColor);
+
+            SetIndicators();
+
             Console.Write(" ");
         }
 
