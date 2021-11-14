@@ -51,9 +51,9 @@ namespace Chess
                     if (false == Box.isActive) Box.IsActive = true;
                     else 
                     {
-                        board.GetOverCell().Piece = board.GetActiveCell().Piece;
+                        board.OverCell.Piece = board.ActiveCell.Piece;
 
-                        board.GetActiveCell().Piece = null;
+                        board.ActiveCell.Piece = null;
 
                         Box.IsActive = false;
                         Board.Row = Board.ORow;

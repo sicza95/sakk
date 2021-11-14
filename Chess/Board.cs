@@ -14,7 +14,7 @@ namespace Chess
         private static int o_row = 7;
         private static int o_col = 0;
 
-        public static int Row 
+        public static int Row
         {
             get => row;
             set
@@ -59,7 +59,27 @@ namespace Chess
             }
         }
 
-        public static string[][] template = new string[][] {
+        public Cell ActiveCell
+        {
+            get
+            {
+                List<Cell> cells = GetCellList();
+
+                return cells.Find(cell => cell.IsActive);
+            }
+        }
+
+        public Cell OverCell
+        {
+            get
+            {
+                List<Cell> cells = GetCellList();
+
+                return cells.Find(cell => cell.IsOver);
+            }
+        }
+
+    public static string[][] template = new string[][] {
             new string[] { "W", "B", "W", "B", "W", "B", "W", "B" },
             new string[] { "B", "W", "B", "W", "B", "W", "B", "W" },
             new string[] { "W", "B", "W", "B", "W", "B", "W", "B" },
@@ -110,30 +130,6 @@ namespace Chess
             }
 
             return cells;
-        }
-
-        public Cell GetActiveCell()
-        {
-            List<Cell> cells = GetCellList();
-
-            return cells.Find(cell => cell.IsActive);
-        }
-
-        public Cell GetOverCell()
-        {
-            List<Cell> cells = GetCellList();
-
-            return cells.Find(cell => cell.IsOver);
-        }
-
-        public ChessPiece GetActivePiece() 
-        {
-            return GetActiveCell().Piece;
-        }
-
-        public ChessPiece GetOverPiece() 
-        {
-            return GetOverCell().Piece;
         }
 
         public static void Sc(int left, int top)
