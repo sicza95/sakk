@@ -171,7 +171,29 @@ namespace Chess
                         }
                         else
                         {
-                            cell = new Cell(rowIndex, colIndex, new ChessPiece(value, rowIndex, colIndex, this));
+                            switch (value[0])
+                            {
+                                case 'P':
+                                    cell = new Cell(rowIndex, colIndex, new ChessPawn(value, rowIndex, colIndex, this));
+                                    break;
+                                case 'R':
+                                    cell = new Cell(rowIndex, colIndex, new ChessPawn(value, rowIndex, colIndex, this));
+                                    break;
+                                case 'N':
+                                    cell = new Cell(rowIndex, colIndex, new ChessPawn(value, rowIndex, colIndex, this));
+                                    break;
+                                case 'B':
+                                    cell = new Cell(rowIndex, colIndex, new ChessPawn(value, rowIndex, colIndex, this));
+                                    break;
+                                case 'Q':
+                                    cell = new Cell(rowIndex, colIndex, new ChessPawn(value, rowIndex, colIndex, this));
+                                    break;
+                                case 'K':
+                                    cell = new Cell(rowIndex, colIndex, new ChessPawn(value, rowIndex, colIndex, this));
+                                    break;
+
+                            }
+                            
                         }
 
                         state[rowIndex][colIndex] = cell;
