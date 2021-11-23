@@ -46,7 +46,6 @@
     <Compile Include="Board.cs" />
     <Compile Include="Box.cs" />
     <Compile Include="Cell.cs" />
-    <Compile Include="ChessPawn.cs" />
     <Compile Include="ChessPiece.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

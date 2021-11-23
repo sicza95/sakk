@@ -16,33 +16,52 @@ namespace Chess
 
         public string Color { get; private set; }
 
-        public bool IsActive => Board.Row == RowIndex && Board.Col == ColIndex;
-        public bool IsOver => Board.ORow == RowIndex && Board.OCol == ColIndex;
+        public bool IsActive => Board.ActiveRowIndex == RowIndex && Board.ActiveColIndex == ColIndex;
+        public bool IsOver => Board.OverRowIndex == RowIndex && Board.OverColIndex == ColIndex;
+        public bool IsSelected => Board.SelectedCell == this;
 
-        public ChessPiece Piece { get; set; }
 
-        public Cell(int rowIndex, int colIndex)
+        private ChessPiece piece = null;
+        public ChessPiece Piece 
+        {
+            get => piece;
+            set {
+                piece = value;
+                if (null != value)
+                {
+                    value.Cell = this;
+                }
+            }
+        }
+
+        public bool HasPiece => null != Piece;
+
+        public Board Board { get; set; }
+
+        public Cell(int rowIndex, int colIndex, Board board)
         {
             RowIndex = rowIndex;
             ColIndex = colIndex;
 
             Color = Board.template[rowIndex][colIndex];
+
+            Board = board;
         }
 
-        public Cell(int rowIndex, int colIndex, ChessPiece piece)
-        {
-            RowIndex = rowIndex;
-            ColIndex = colIndex;
-
-            Color = Board.template[rowIndex][colIndex];
-
-            Piece = piece;
-        }
-
-        public void Draw(int rowIndex, int colIndex)
+        public void Draw()
         {
             Console.SetCursorPosition(Left, Top);
-            Box.Draw(Color, rowIndex, colIndex, Piece);
+            Box.Draw(this);
+        }
+
+        private static bool IsIndexValid(int index)
+        {
+            return 0 <= index && index <= 7;
+        }
+
+        public static bool DoesExist(int rowIndex, int colIndex)
+        {
+            return IsIndexValid(rowIndex) && IsIndexValid(colIndex);
         }
     }
 }

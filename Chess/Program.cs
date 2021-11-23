@@ -8,73 +8,87 @@ namespace Chess
 {
     class Program
     {
-        static void Main(string[] args)
+        static int OnUpArrow(Board board)
         {
-            Console.WriteLine("Hello World!");
+            return board.HasSelectedCell ? board.OverRowIndex-- : board.ActiveRowIndex--;
+        }
 
-            Board board = new Board();
+        static int OnDownArrow(Board board)
+        {
+            return board.HasSelectedCell ? board.OverRowIndex++ : board.ActiveRowIndex++;
+        }
 
-            Board.DrawRules();
+        static int OnLeftArrow(Board board)
+        {
+            return board.HasSelectedCell ? board.OverColIndex-- : board.ActiveColIndex--;
+        }
 
+        static int OnRightArrow(Board board)
+        {
+            return board.HasSelectedCell ? board.OverColIndex++ : board.ActiveColIndex++;
+        }
+
+        static Cell OnEnter(Board board)
+        {
+            if (!board.HasSelectedCell)
+            {
+                return board.SelectedCell = board.CellList.Find(
+                    e => e.RowIndex == board.OverRowIndex && e.ColIndex == board.OverColIndex
+                );
+            }
+            else
+            {
+                board.OverCell.Piece = board.SelectedCell.Piece;
+                board.OverCell.Piece.Touched = true;
+                board.SelectedCell.Piece = null;
+
+                board.ActiveRowIndex = board.OverRowIndex;
+                board.ActiveColIndex = board.OverColIndex;
+
+                return board.SelectedCell = null;
+            }
+        }
+
+        static void OnBackspace(Board board)
+        {
+            board.SelectedCell = null;
+        }
+
+        static void StartListeners(Board board)
+        {
             ConsoleKey key;
 
             do
             {
                 key = Console.ReadKey().Key;
 
-                if (key == ConsoleKey.UpArrow)
+                if (key == ConsoleKey.UpArrow) OnUpArrow(board);
+
+                if (key == ConsoleKey.DownArrow) OnDownArrow(board);
+
+                if (key == ConsoleKey.LeftArrow) OnLeftArrow(board);
+
+                if (key == ConsoleKey.RightArrow) OnRightArrow(board);
+
+                if (key == ConsoleKey.Enter) OnEnter(board);
+
+                if (key == ConsoleKey.Backspace) OnBackspace(board);
+
+                if (!board.HasSelectedCell)
                 {
-                    if (Box.isActive) Board.ORow--;
-                    else Board.Row--;
-                }
-
-                if (key == ConsoleKey.DownArrow)
-                {
-                    if (Box.isActive) Board.ORow++;
-                    else Board.Row++;
-                }
-
-                if (key == ConsoleKey.LeftArrow)
-                {
-                    if (Box.isActive) Board.OCol--;
-                    else Board.Col--;
-                }
-
-                if (key == ConsoleKey.RightArrow)
-                {
-                    if (Box.isActive) Board.OCol++;
-                    else Board.Col++;
-                }
-
-                if (key == ConsoleKey.Enter)
-                {
-                    if (false == Box.isActive) Box.IsActive = true;
-                    else 
-                    {
-                        board.OverCell.Piece = board.ActiveCell.Piece;
-
-                        board.ActiveCell.Piece = null;
-
-                        Box.IsActive = false;
-                        Board.Row = Board.ORow;
-                        Board.Col = Board.OCol;
-                    }
-                }
-
-                if (key == ConsoleKey.Backspace)
-                {
-                    Box.IsActive = false;
-                }
-
-                if (!Box.isActive)
-                {
-                    Board.ORow = Board.Row;
-                    Board.OCol = Board.Col;
+                    board.OverRowIndex = board.ActiveRowIndex;
+                    board.OverColIndex = board.ActiveColIndex;
                 }
 
                 board.Draw();
 
             } while (key != ConsoleKey.Escape);
+        }
+
+        static void Main(string[] args)
+        {
+            Board.DrawRules();
+            StartListeners(new Board());
         }
     }
 }
