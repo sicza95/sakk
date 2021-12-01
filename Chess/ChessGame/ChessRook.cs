@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ChessGame
 {
@@ -9,16 +13,21 @@ namespace ChessGame
 		int[,] rookPositions = new int[28, 2];
 		int[,] attackPositions = new int[64, 2];
 		int steps;
-		public ChessRook(char color) : base(color)
+		char initialFile;
+		int initialRank;
+		public ChessRook(char color,char file, int rank) : base(color,file,rank)
         {
 			this.name = 'R';
 			this.color = color;
 			this.steps = 0;
+			this.initialFile = file;
+			this.initialRank = rank;
         }
 		public override string Name => this.name.ToString();
 		public override string Color => this.color.ToString();
 		public override int Steps => this.steps;
 		public override int[,] AttackPositions => this.attackPositions;
+		
 		public override bool MoveSet(int starti, int startj, int endi, int endj, Chessboard currentboard, bool kiiras)
         {
 			// vertical up positions:
@@ -475,5 +484,6 @@ namespace ChessGame
 			}
 			return false;
 		}
+
 	}
 }

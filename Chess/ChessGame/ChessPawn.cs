@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ChessGame
 {
@@ -9,10 +13,14 @@ namespace ChessGame
 		bool enPassant = false;
 		int[,] pawnPositions = new int[3,2];
 		int[,] attackPositions = new int[64, 2];
-		public ChessPawn(char color) : base(color)
+		char initialFile;
+		int initialRank;
+		public ChessPawn(char color,char file, int rank) : base(color,file,rank)
 		{
 			this.name = 'P';
 			this.color = color;
+			this.initialFile = file;
+			this.initialRank = rank;
 		}
 		public override string Name => this.name.ToString();
 		public override string Color => this.color.ToString();
@@ -458,5 +466,6 @@ namespace ChessGame
 			}
 			return false;
 		}
+
 	}
 }

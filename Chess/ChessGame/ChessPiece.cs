@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ChessGame
 {
@@ -9,21 +13,29 @@ namespace ChessGame
 		bool enPassant;
 		int[,] attackPositions = new int[64, 2];
 		int steps;
-		public ChessPiece(char color)
+		char initialFile;
+		int initialRank;
+		
+		public ChessPiece(char color,char file,int rank)
 		{
 			this.name = ' ';
 			this.color = color;
 			this.steps = 0;
+			this.initialFile = file;
+			this.initialRank = rank;
 		}
+
 		public virtual string Name => this.name.ToString();
 		public virtual string Color => this.color.ToString();
 		public virtual bool EnPassant => this.enPassant;
 		public virtual int Steps => this.steps;
 		public virtual int[,] AttackPositions => this.attackPositions;
+		
 		public virtual bool MoveSet(int starti, int startj, int endi, int endj, Chessboard currentboard, bool kiiras)
         {
 			return false;
         }
+		
 		public virtual bool MoveSet2(int starti, int startj, Chessboard currentboard)
 		{
 			return false;
@@ -33,12 +45,16 @@ namespace ChessGame
         {
 			return false;
         }
+		
 		public virtual bool WillKingBeInCheck(int fieldi, int fieldj, Chessboard currentboard, int starti, int startj, int endi, int endj)
 		{
 			return false;
 		}
+		
 		public virtual bool IsFieldUnderAttack(int fieldi, int fieldj, Chessboard currentboard)
 		{
+			
+
 			// horizontal left positions:
 			attackPositions[0, 0] = fieldi; attackPositions[0, 1] = fieldj - 1;
 			attackPositions[1, 0] = fieldi; attackPositions[1, 1] = fieldj - 2;
@@ -510,5 +526,6 @@ namespace ChessGame
 			}
 			return false;
 		}
+
 	}
 }
