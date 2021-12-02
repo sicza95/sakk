@@ -19,6 +19,14 @@ namespace Chess
                 if (Name == "P") {
                     return PawnMoves;
                 }
+                if (Name == "B")
+                {
+                    return BishopMoves;
+                }
+                if (Name == "R")
+                {
+                    return RookMoves;
+                }
 
                 return new List<string>();
             }
@@ -60,6 +68,57 @@ namespace Chess
             }
         }
 
+        public List<string> BishopMoves
+        {
+            get
+            {
+                List<string> moves = CastRay(45, Touched ? 1 : 2, false);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    int r = RowIndex + Direction;
+                    int c = ColIndex + 1;
+
+                    if (Cell.DoesExist(r, c))
+                    {
+                        Cell cell = Board.GetAt(r, c);
+
+                        if (cell.HasPiece && cell.Piece.Color != Color)
+                        {
+                            moves.Add($"{r}{c}");
+                        }
+                    }
+
+                }
+                return moves;
+            }
+        }
+        public List<string> RookMoves
+        {
+            get
+            {
+                List<string> moves = CastRay(90, Touched ? 1 : 2, false);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    int r = RowIndex + Direction;
+                    int c = ColIndex + 1;
+
+                    if (Cell.DoesExist(r, c))
+                    {
+                        Cell cell = Board.GetAt(r, c);
+
+                        if (cell.HasPiece && cell.Piece.Color != Color)
+                        {
+                            moves.Add($"{r}{c}");
+                        }
+                    }
+
+                }
+                return moves;
+            }
+        }
+
         public List<string> CastRay(int deg = 0, int length = 7, bool includeLast = true)
         {
             List<string> rc = new List<string>();
@@ -85,11 +144,70 @@ namespace Chess
 
                     rc.Add($"{r}{c}");
                 }
+
                 if (45 == deg)
                 {
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        r -= 1;
+                        c -= 1;
+                        rc.Add($"{r}{c}");
+                    }
+                    r = RowIndex;
+                    c = ColIndex;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        r += 1;
+                        c += 1;
+                        rc.Add($"{r}{c}");
+                    }
+                    r = RowIndex;
+                    c = ColIndex;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        r -= 1;
+                        c += 1;
+                        rc.Add($"{r}{c}");
+                    }
+                    r = RowIndex;
+                    c = ColIndex;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        r += 1;
+                        c -= 1;
+                        rc.Add($"{r}{c}");
+                    }
                 }
+
                 if (90 == deg)
                 {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        r -= 1;
+                        rc.Add($"{r}{c}");
+                    }
+                    r = RowIndex;
+                    c = ColIndex;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        r += 1;
+                        rc.Add($"{r}{c}");
+                    }
+                    r = RowIndex;
+                    c = ColIndex;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        c += 1;
+                        rc.Add($"{r}{c}");
+                    }
+                    r = RowIndex;
+                    c = ColIndex;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        c -= 1;
+                        rc.Add($"{r}{c}");
+                    }
                 }
                 if (135 == deg)
                 {
@@ -107,6 +225,7 @@ namespace Chess
                 {
                 }
             }
+
 
             return rc;
         }
