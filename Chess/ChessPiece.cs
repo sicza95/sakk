@@ -16,18 +16,21 @@ namespace Chess
 
         public List<string> MoveSet {
             get {
-                if (Name == "P") {
-                    return PawnMoves;
-                }
-                if (Name == "B")
+                switch(Name)
                 {
-                    return BishopMoves;
+                    case "P":
+                        return PawnMoves;
+                    case "K":
+                        return KingMoves;
+                    case "Q":
+                        return QueenMoves;
+                    case "R":
+                        return RookMoves;
+                    case "B":
+                        return BishopMoves;
+                    case "N":
+                        return KnightMoves;
                 }
-                if (Name == "R")
-                {
-                    return RookMoves;
-                }
-
                 return new List<string>();
             }
         }
@@ -67,32 +70,77 @@ namespace Chess
                 return moves;
             }
         }
-
-        public List<string> BishopMoves
+        public List<string> KingMoves
         {
             get
             {
-                List<string> moves = CastRay(45, Touched ? 1 : 2, false);
+                List<string> moves = CastRay(135, Touched ? 1 : 2, false);
 
-                for (int i = 0; i < 7; i++)
+                int r = RowIndex + Direction;
+                int c = ColIndex + 1;
+
+                if (Cell.DoesExist(r, c))
                 {
-                    int r = RowIndex + Direction;
-                    int c = ColIndex + 1;
+                    Cell cell = Board.GetAt(r, c);
 
-                    if (Cell.DoesExist(r, c))
+                    if (cell.HasPiece && cell.Piece.Color != Color)
                     {
-                        Cell cell = Board.GetAt(r, c);
-
-                        if (cell.HasPiece && cell.Piece.Color != Color)
-                        {
-                            moves.Add($"{r}{c}");
-                        }
+                        moves.Add($"{r}{c}");
                     }
-
                 }
+
+                c = ColIndex - 1;
+
+                if (Cell.DoesExist(r, c))
+                {
+                    Cell cell = Board.GetAt(r, c);
+
+                    if (cell.HasPiece && cell.Piece.Color != Color)
+                    {
+                        moves.Add($"{r}{c}");
+                    }
+                }
+
                 return moves;
             }
         }
+        public List<string> QueenMoves
+        {
+            get
+            {
+                List<string> moves45 = CastRay(45, Touched ? 1 : 2, false);
+                List<string> moves90 = CastRay(90, Touched ? 1 : 2, false);
+                List<string> moves = moves45.Union(moves90).ToList();
+
+                int r = RowIndex + Direction;
+                int c = ColIndex + 1;
+
+                if (Cell.DoesExist(r, c))
+                {
+                    Cell cell = Board.GetAt(r, c);
+
+                    if (cell.HasPiece && cell.Piece.Color != Color)
+                    {
+                        moves.Add($"{r}{c}");
+                    }
+                }
+
+                c = ColIndex - 1;
+
+                if (Cell.DoesExist(r, c))
+                {
+                    Cell cell = Board.GetAt(r, c);
+
+                    if (cell.HasPiece && cell.Piece.Color != Color)
+                    {
+                        moves.Add($"{r}{c}");
+                    }
+                }
+
+                return moves;
+            }
+        }
+
         public List<string> RookMoves
         {
             get
@@ -118,15 +166,77 @@ namespace Chess
                 return moves;
             }
         }
+        public List<string> BishopMoves
+        {
+            get
+            {
+                List<string> moves = CastRay(45, Touched ? 1 : 2, false);
 
+                for (int i = 0; i < 7; i++)
+                {
+                    int r = RowIndex + Direction;
+                    int c = ColIndex + 1;
+
+                    if (Cell.DoesExist(r, c))
+                    {
+                        Cell cell = Board.GetAt(r, c);
+
+                        if (cell.HasPiece && cell.Piece.Color != Color)
+                        {
+                            moves.Add($"{r}{c}");
+                        }
+                    }
+
+                }
+                return moves;
+            }
+        }
+        public List<string> KnightMoves
+        {
+            get
+            {
+                List<string> moves = CastRay(45, Touched ? 1 : 2, false);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    int r = RowIndex + Direction;
+                    int c = ColIndex + 1;
+
+                    if (Cell.DoesExist(r, c))
+                    {
+                        Cell cell = Board.GetAt(r, c);
+
+                        if (cell.HasPiece && cell.Piece.Color != Color)
+                        {
+                            moves.Add($"{r}{c}");
+                        }
+                    }
+
+                }
+                return moves;
+            }
+        }
         public List<string> CastRay(int deg = 0, int length = 7, bool includeLast = true)
         {
             List<string> rc = new List<string>();
             int r = RowIndex, c = ColIndex;
 
+            //set Rowindex, Colindex to initial value
+            int IndexSet(int n) 
+            {
+                string name = nameof(n);
+                if (name == "r")
+                {
+                    return RowIndex;
+                }
+                else
+                    return ColIndex;
+            }
+
             for (int step = 1; step <= length; step++)
             {
-                if (0 == deg)
+                // forward one step
+                if (0 == deg) 
                 {
                     r += Direction;
 
@@ -145,7 +255,8 @@ namespace Chess
                     rc.Add($"{r}{c}");
                 }
 
-                if (45 == deg)
+                // diagonal all the way
+                if (45 == deg) 
                 {
 
                     for (int i = 0; i < 7; i++)
@@ -154,24 +265,24 @@ namespace Chess
                         c -= 1;
                         rc.Add($"{r}{c}");
                     }
-                    r = RowIndex;
-                    c = ColIndex;
+                    IndexSet(r);
+                    IndexSet(c);
                     for (int i = 0; i < 7; i++)
                     {
                         r += 1;
                         c += 1;
                         rc.Add($"{r}{c}");
                     }
-                    r = RowIndex;
-                    c = ColIndex;
+                    IndexSet(r);
+                    IndexSet(c);
                     for (int i = 0; i < 7; i++)
                     {
                         r -= 1;
                         c += 1;
                         rc.Add($"{r}{c}");
                     }
-                    r = RowIndex;
-                    c = ColIndex;
+                    IndexSet(r);
+                    IndexSet(c);
                     for (int i = 0; i < 7; i++)
                     {
                         r += 1;
@@ -180,7 +291,8 @@ namespace Chess
                     }
                 }
 
-                if (90 == deg)
+                // forward and sideways all the way
+                if (90 == deg) 
                 {
                     for (int i = 0; i < 7; i++)
                     {
@@ -209,8 +321,27 @@ namespace Chess
                         rc.Add($"{r}{c}");
                     }
                 }
-                if (135 == deg)
+
+                //forward,sidewawys,diagonal one step
+                if (135 == deg) 
                 {
+                    //NOT WORKING!!!
+                    r -= 1;
+                    rc.Add($"{r}{c}");
+                    c -= 1;
+                    rc.Add($"{r}{c}");
+                    IndexSet(r);
+                    IndexSet(c);
+                    r += 1;
+                    rc.Add($"{r}{c}");
+                    c += 1;
+                    rc.Add($"{r}{c}");
+                    IndexSet(r);
+                    IndexSet(c);
+                    r += 1;
+                    c -= 1;
+                    rc.Add($"{r}{c}");
+
                 }
                 if (180 == deg)
                 {
