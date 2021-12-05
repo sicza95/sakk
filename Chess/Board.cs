@@ -209,9 +209,7 @@ namespace Chess
         {
             if (!File.Exists("./start.txt") || !File.Exists("./history.txt"))
             {
-                Console.Write("No save file");
-
-                return;
+                throw new Exception("no_save_file");
             }
 
             string[] saveHistory = File.ReadAllLines("./history.txt");

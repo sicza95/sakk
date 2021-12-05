@@ -127,14 +127,25 @@ namespace Chess
         static void OnF5(Board board)
         {
             board.Save();
+            PlaySave();
+
         }
         static void OnF6(Board board)
         {
-            board.Load();
+            try
+            {
+                board.Load();
+                PlayLoad();
+            }
+            catch (Exception)
+            {
+                PlayError();
+            }
         }
         static void OnF2(Board board)
         {
             board.New();
+            PlayStart();
         }
 
         static void StartListeners(Board board)
@@ -209,6 +220,22 @@ namespace Chess
         static Cell PlayPromotion()
         {
             System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/tada.wav");
+            player.Play();
+
+            return null;
+        }
+
+        static Cell PlaySave()
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/Windows Print Complete.wav");
+            player.Play();
+
+            return null;
+        }
+
+        static Cell PlayLoad()
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/Windows Restore.wav");
             player.Play();
 
             return null;

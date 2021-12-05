@@ -58,6 +58,8 @@
     <Content Include="asset\sound\tada.wav" />
     <Content Include="asset\sound\Windows Ding.wav" />
     <Content Include="asset\sound\Windows Logon.wav" />
+    <Content Include="asset\sound\Windows Print complete.wav" />
+    <Content Include="asset\sound\Windows Restore.wav" />
     <Content Include="asset\sound\Windows Startup.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
