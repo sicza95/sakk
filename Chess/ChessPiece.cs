@@ -177,6 +177,23 @@ namespace Chess
             Cell = cell;
         }
 
+        public ChessPiece Promote()
+        {
+            switch (Board.Promote())
+            {
+                case "Q":
+                    return ToQueen();
+                case "N":
+                    return ToKnight();
+                case "B":
+                    return ToBishop();
+                case "R":
+                    return ToRook();
+                default:
+                    return this;
+            }
+        }
+
         public ChessPiece ToKing()
         {
             if (Name == "P") Name = "K";

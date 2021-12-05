@@ -92,6 +92,20 @@ namespace Chess
                 PlayHit();
             }
 
+            if (piece.Name == "P")
+            {
+                if (piece.Color == "B" && targetCell.RowIndex == 7)
+                {
+                    piece.Promote();
+                    PlayPromotion();
+                }
+                if (piece.Color == "W" && targetCell.RowIndex == 0)
+                {
+                    piece.Promote();
+                    PlayPromotion();
+                }
+            }
+
             board.DrawLastMove();
 
             targetCell.Piece = piece;
@@ -187,6 +201,14 @@ namespace Chess
         static Cell PlayHit()
         {
             System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/recycle.wav");
+            player.Play();
+
+            return null;
+        }
+
+        static Cell PlayPromotion()
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/tada.wav");
             player.Play();
 
             return null;

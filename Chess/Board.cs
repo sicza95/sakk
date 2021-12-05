@@ -185,6 +185,20 @@ namespace Chess
             Console.Write(history.Last() + "          ");
         }
 
+        public string Promote()
+        {
+            Sc(41, 19);
+            Console.Write("Promote to (Q | R | B | N): ");
+
+            string newName = Console.ReadLine();
+
+            Sc(41, 19);
+            Console.Write("                                             ");
+
+            return newName;
+
+        }
+
         public void Save()
         {
             File.WriteAllLines("./start.txt", state.Select(row => string.Join(";", row.Select(col => col.HasPiece ? $"{col.Piece.Name}{col.Piece.Color}" : ""))));
@@ -238,7 +252,6 @@ namespace Chess
                             }
                         }
                     }
-                    
 
                     state[rowIndex][colIndex] = cell;
 
