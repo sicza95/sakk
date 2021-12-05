@@ -20,6 +20,7 @@ namespace Chess
         public bool IsOver => Board.OverRowIndex == RowIndex && Board.OverColIndex == ColIndex;
         public bool IsSelected => Board.SelectedCell == this;
 
+        public string Name => $"{"ABCDEFGH"[ColIndex]}{"87654321"[RowIndex]}";
 
         private ChessPiece piece = null;
         public ChessPiece Piece 

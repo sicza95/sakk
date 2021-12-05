@@ -53,5 +53,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="asset\sound\recycle.wav" />
+    <Content Include="asset\sound\Windows Ding.wav" />
+    <Content Include="asset\sound\Windows Logon.wav" />
+    <Content Include="asset\sound\Windows Startup.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

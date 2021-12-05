@@ -30,28 +30,97 @@ namespace Chess
 
         static Cell OnEnter(Board board)
         {
+            Cell cell = board.CellList.Find(c => c.RowIndex == board.OverRowIndex && c.ColIndex == board.OverColIndex);
+
             if (!board.HasSelectedCell)
             {
-                return board.SelectedCell = board.CellList.Find(
-                    e => e.RowIndex == board.OverRowIndex && e.ColIndex == board.OverColIndex
-                );
+                if (!cell.HasPiece)
+                {
+                    // Empty cell
+                    return PlayError();
+                }
+
+                ChessPiece piece = cell.Piece;
+
+                if (piece.Color != board.Player || 0 == piece.MoveSet.Count)
+                {
+                    // Invalid piece color || no moves
+                    return PlayError();
+                }
+
+                // Start move
+                return board.SelectedCell = cell;
             }
             else
             {
-                board.OverCell.Piece = board.SelectedCell.Piece;
-                board.OverCell.Piece.Touched = true;
-                board.SelectedCell.Piece = null;
+                Cell selCell = board.SelectedCell;
 
-                board.ActiveRowIndex = board.OverRowIndex;
-                board.ActiveColIndex = board.OverColIndex;
+                if (cell.RowIndex == selCell.RowIndex && cell.ColIndex == selCell.ColIndex)
+                {
+                    // No moves made
+                    return PlayError();
+                }
 
-                return board.SelectedCell = null;
+                if (!board.SelectedCell.Piece.MoveSet.Contains($"{cell.RowIndex}{cell.ColIndex}"))
+                {
+                    // Invalid move
+                    return PlayError();
+                }
+
+                // End move
+                return Move(board);
             }
+        }
+
+        static Cell Move(Board board)
+        {
+            Cell sourceCell = board.SelectedCell;
+            Cell targetCell = board.OverCell;
+
+            ChessPiece piece = sourceCell.Piece;
+
+            string record = $"{piece.Color}{piece.Name} {sourceCell.Name} -> {targetCell.Name}";
+
+            if (!targetCell.HasPiece)
+            {
+                board.history.Add(record);
+                PlayStep();
+            }
+            else
+            {
+                board.history.Add($"{record} x {targetCell.Piece.Color}{targetCell.Piece.Name}");
+                PlayHit();
+            }
+
+            board.DrawLastMove();
+
+            targetCell.Piece = piece;
+            piece.Touched = true;
+
+            sourceCell.Piece = null;
+
+            board.ActiveRowIndex = board.OverRowIndex;
+            board.ActiveColIndex = board.OverColIndex;
+
+            return board.SelectedCell = null;
         }
 
         static void OnBackspace(Board board)
         {
             board.SelectedCell = null;
+        }
+
+        static void OnF5(Board board)
+        {
+            board.Save();
+        }
+        static void OnF6(Board board)
+        {
+            board.Load();
+        }
+        static void OnF2(Board board)
+        {
+            board.New();
         }
 
         static void StartListeners(Board board)
@@ -74,6 +143,12 @@ namespace Chess
 
                 if (key == ConsoleKey.Backspace) OnBackspace(board);
 
+                if (key == ConsoleKey.F5) OnF5(board);
+
+                if (key == ConsoleKey.F6) OnF6(board);
+
+                if (key == ConsoleKey.F2) OnF2(board);
+
                 if (!board.HasSelectedCell)
                 {
                     board.OverRowIndex = board.ActiveRowIndex;
@@ -85,8 +160,41 @@ namespace Chess
             } while (key != ConsoleKey.Escape);
         }
 
+        static Cell PlayError()
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/Windows Ding.wav");
+            player.Play();
+
+            return null;
+        }
+
+        static Cell PlayStart()
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/Windows Logon.wav");
+            player.Play();
+
+            return null;
+        }
+
+        static Cell PlayStep()
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/Windows Startup.wav");
+            player.Play();
+
+            return null;
+        }
+
+        static Cell PlayHit()
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"./asset/sound/recycle.wav");
+            player.Play();
+
+            return null;
+        }
+
         static void Main(string[] args)
         {
+            PlayStart();
             Board.DrawRules();
             StartListeners(new Board());
         }

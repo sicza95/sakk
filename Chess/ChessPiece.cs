@@ -42,30 +42,16 @@ namespace Chess
             get {
                 List<string> moves = CastRay(0, Touched ? 1 : 2, false);
 
+                // check if hit is available...
+
+                // ...in the next row
                 int r = RowIndex + Direction;
-                int c = ColIndex + 1;
 
-                if (Cell.DoesExist(r,c))
-                {
-                    Cell cell = Board.GetAt(r,c);
+                // ...to the right
+                RequestAttack(r, ColIndex + 1, ref moves);
 
-                    if (cell.HasPiece && cell.Piece.Color != Color)
-                    {
-                        moves.Add($"{r}{c}");
-                    }
-                }
-
-                c = ColIndex - 1;
-
-                if (Cell.DoesExist(r, c))
-                {
-                    Cell cell = Board.GetAt(r, c);
-
-                    if (cell.HasPiece && cell.Piece.Color != Color)
-                    {
-                        moves.Add($"{r}{c}");
-                    }
-                }
+                // ...to the left
+                RequestAttack(r, ColIndex - 1, ref moves);
 
                 return moves;
             }
@@ -74,32 +60,10 @@ namespace Chess
         {
             get
             {
-                List<string> moves = CastRay(135, Touched ? 1 : 2, false);
+                List<string> moves = new List<string>();
+                List<int> directions = new List<int> { 0, 45, 90, 135, 180, 225, 270, 315 };
 
-                int r = RowIndex + Direction;
-                int c = ColIndex + 1;
-
-                if (Cell.DoesExist(r, c))
-                {
-                    Cell cell = Board.GetAt(r, c);
-
-                    if (cell.HasPiece && cell.Piece.Color != Color)
-                    {
-                        moves.Add($"{r}{c}");
-                    }
-                }
-
-                c = ColIndex - 1;
-
-                if (Cell.DoesExist(r, c))
-                {
-                    Cell cell = Board.GetAt(r, c);
-
-                    if (cell.HasPiece && cell.Piece.Color != Color)
-                    {
-                        moves.Add($"{r}{c}");
-                    }
-                }
+                directions.ForEach(deg => moves = moves.Concat(CastRay(deg, Touched ? 1 : 2)).ToList());
 
                 return moves;
             }
@@ -108,34 +72,10 @@ namespace Chess
         {
             get
             {
-                List<string> moves45 = CastRay(45, Touched ? 1 : 2, false);
-                List<string> moves90 = CastRay(90, Touched ? 1 : 2, false);
-                List<string> moves = moves45.Union(moves90).ToList();
+                List<string> moves = new List<string>();
+                List<int> directions = new List<int> { 0, 45, 90, 135, 180, 225, 270, 315 };
 
-                int r = RowIndex + Direction;
-                int c = ColIndex + 1;
-
-                if (Cell.DoesExist(r, c))
-                {
-                    Cell cell = Board.GetAt(r, c);
-
-                    if (cell.HasPiece && cell.Piece.Color != Color)
-                    {
-                        moves.Add($"{r}{c}");
-                    }
-                }
-
-                c = ColIndex - 1;
-
-                if (Cell.DoesExist(r, c))
-                {
-                    Cell cell = Board.GetAt(r, c);
-
-                    if (cell.HasPiece && cell.Piece.Color != Color)
-                    {
-                        moves.Add($"{r}{c}");
-                    }
-                }
+                directions.ForEach(deg => moves = moves.Concat(CastRay(deg)).ToList());
 
                 return moves;
             }
@@ -145,24 +85,11 @@ namespace Chess
         {
             get
             {
-                List<string> moves = CastRay(90, Touched ? 1 : 2, false);
+                List<string> moves = new List<string>();
+                List<int> directions = new List<int> { 0, 90, 180, 270 };
 
-                for (int i = 0; i < 7; i++)
-                {
-                    int r = RowIndex + Direction;
-                    int c = ColIndex + 1;
+                directions.ForEach(deg => moves = moves.Concat(CastRay(deg)).ToList());
 
-                    if (Cell.DoesExist(r, c))
-                    {
-                        Cell cell = Board.GetAt(r, c);
-
-                        if (cell.HasPiece && cell.Piece.Color != Color)
-                        {
-                            moves.Add($"{r}{c}");
-                        }
-                    }
-
-                }
                 return moves;
             }
         }
@@ -170,24 +97,11 @@ namespace Chess
         {
             get
             {
-                List<string> moves = CastRay(45, Touched ? 1 : 2, false);
+                List<string> moves = new List<string>();
+                List<int> directions = new List<int> { 45, 135, 225, 315 };
 
-                for (int i = 0; i < 7; i++)
-                {
-                    int r = RowIndex + Direction;
-                    int c = ColIndex + 1;
+                directions.ForEach(deg => moves = moves.Concat(CastRay(deg)).ToList());
 
-                    if (Cell.DoesExist(r, c))
-                    {
-                        Cell cell = Board.GetAt(r, c);
-
-                        if (cell.HasPiece && cell.Piece.Color != Color)
-                        {
-                            moves.Add($"{r}{c}");
-                        }
-                    }
-
-                }
                 return moves;
             }
         }
@@ -195,24 +109,20 @@ namespace Chess
         {
             get
             {
-                List<string> moves = CastRay(45, Touched ? 1 : 2, false);
+                List<string> moves = new List<string>();
 
-                for (int i = 0; i < 7; i++)
-                {
-                    int r = RowIndex + Direction;
-                    int c = ColIndex + 1;
+                RequestStep(RowIndex + 2, ColIndex + 1, ref moves);
+                RequestStep(RowIndex + 1, ColIndex + 2, ref moves);
 
-                    if (Cell.DoesExist(r, c))
-                    {
-                        Cell cell = Board.GetAt(r, c);
+                RequestStep(RowIndex - 1, ColIndex + 2, ref moves);
+                RequestStep(RowIndex - 2, ColIndex + 1, ref moves);
 
-                        if (cell.HasPiece && cell.Piece.Color != Color)
-                        {
-                            moves.Add($"{r}{c}");
-                        }
-                    }
+                RequestStep(RowIndex - 2, ColIndex - 1, ref moves);
+                RequestStep(RowIndex - 1, ColIndex - 2, ref moves);
 
-                }
+                RequestStep(RowIndex + 1, ColIndex - 2, ref moves);
+                RequestStep(RowIndex + 2, ColIndex - 1, ref moves);
+
                 return moves;
             }
         }
@@ -221,142 +131,32 @@ namespace Chess
             List<string> rc = new List<string>();
             int r = RowIndex, c = ColIndex;
 
-            //set Rowindex, Colindex to initial value
-            int IndexSet(int n) 
-            {
-                string name = nameof(n);
-                if (name == "r")
-                {
-                    return RowIndex;
-                }
-                else
-                    return ColIndex;
-            }
-
             for (int step = 1; step <= length; step++)
             {
-                // forward one step
-                if (0 == deg) 
+                IncrementByDirection(ref r, ref c, deg);
+
+                // no cell
+                if (!Cell.DoesExist(r, c))
                 {
-                    r += Direction;
-
-                    if (!Cell.DoesExist(r,c))
-                    {
-                        break;
-                    }
-
-                    Cell cell = Board.GetAt(r, c);
-
-                    if (includeLast ? cell.HasPiece && cell.Piece.Color == Color : cell.HasPiece)
-                    {
-                        break;
-                    }
-
-                    rc.Add($"{r}{c}");
+                    break;
                 }
+                Cell cell = Board.GetAt(r, c);
 
-                // diagonal all the way
-                if (45 == deg) 
+                // has piece
+                if (cell.HasPiece)
                 {
-
-                    for (int i = 0; i < 7; i++)
+                    // have to stop no matter what, but the piece is an enemy, we add it to our moves
+                    // except includeLast is False
+                    if (includeLast && cell.Piece.Color != Color)
                     {
-                        r -= 1;
-                        c -= 1;
                         rc.Add($"{r}{c}");
                     }
-                    IndexSet(r);
-                    IndexSet(c);
-                    for (int i = 0; i < 7; i++)
-                    {
-                        r += 1;
-                        c += 1;
-                        rc.Add($"{r}{c}");
-                    }
-                    IndexSet(r);
-                    IndexSet(c);
-                    for (int i = 0; i < 7; i++)
-                    {
-                        r -= 1;
-                        c += 1;
-                        rc.Add($"{r}{c}");
-                    }
-                    IndexSet(r);
-                    IndexSet(c);
-                    for (int i = 0; i < 7; i++)
-                    {
-                        r += 1;
-                        c -= 1;
-                        rc.Add($"{r}{c}");
-                    }
+
+                    break;
                 }
 
-                // forward and sideways all the way
-                if (90 == deg) 
-                {
-                    for (int i = 0; i < 7; i++)
-                    {
-                        r -= 1;
-                        rc.Add($"{r}{c}");
-                    }
-                    r = RowIndex;
-                    c = ColIndex;
-                    for (int i = 0; i < 7; i++)
-                    {
-                        r += 1;
-                        rc.Add($"{r}{c}");
-                    }
-                    r = RowIndex;
-                    c = ColIndex;
-                    for (int i = 0; i < 7; i++)
-                    {
-                        c += 1;
-                        rc.Add($"{r}{c}");
-                    }
-                    r = RowIndex;
-                    c = ColIndex;
-                    for (int i = 0; i < 7; i++)
-                    {
-                        c -= 1;
-                        rc.Add($"{r}{c}");
-                    }
-                }
-
-                //forward,sidewawys,diagonal one step
-                if (135 == deg) 
-                {
-                    //NOT WORKING!!!
-                    r -= 1;
-                    rc.Add($"{r}{c}");
-                    c -= 1;
-                    rc.Add($"{r}{c}");
-                    IndexSet(r);
-                    IndexSet(c);
-                    r += 1;
-                    rc.Add($"{r}{c}");
-                    c += 1;
-                    rc.Add($"{r}{c}");
-                    IndexSet(r);
-                    IndexSet(c);
-                    r += 1;
-                    c -= 1;
-                    rc.Add($"{r}{c}");
-
-                }
-                if (180 == deg)
-                {
-                }
-                if (225 == deg)
-                {
-                }
-                if (270 == deg)
-                {
-                }
-                if (315 == deg)
-                {
-                }
+                rc.Add($"{r}{c}");
             }
-
 
             return rc;
         }
@@ -410,6 +210,87 @@ namespace Chess
             if (Name == "P") Name = "N";
 
             return this;
+        }
+
+        private void RequestStep(int r, int c, ref List<string> moves)
+        {
+            if (Cell.DoesExist(r, c))
+            {
+                Cell cell = Board.GetAt(r, c);
+
+                if (!cell.HasPiece || cell.Piece.Color != Color)
+                {
+                    moves.Add($"{r}{c}");
+                }
+            }
+        }
+
+        private void RequestAttack(int r, int c, ref List<string> moves)
+        {
+            if (Cell.DoesExist(r, c))
+            {
+                Cell cell = Board.GetAt(r, c);
+
+                if (cell.HasPiece && cell.Piece.Color != Color)
+                {
+                    moves.Add($"{r}{c}");
+                }
+            }
+        }
+
+        private void IncrementByDirection(ref int r, ref int c, int deg)
+        {
+            // Up
+            if (0 == deg)
+            {
+                r += Direction;
+            }
+
+            // Up - Right
+            if (45 == deg)
+            {
+                r += Direction;
+                c += 1;
+            }
+
+            // Right
+            if (90 == deg)
+            {
+                c += 1;
+            }
+
+            // Down - Right
+            if (135 == deg)
+            {
+                r -= Direction;
+                c += 1;
+            }
+
+            // Down
+            if (180 == deg)
+            {
+                r -= Direction;
+            }
+
+            // Down - Left
+            if (225 == deg)
+            {
+                r -= Direction;
+                c -= 1;
+            }
+
+            // Left
+            if (270 == deg)
+            {
+                c -= 1;
+            }
+
+            // Up - Left
+            if (315 == deg)
+            {
+                r += Direction;
+                c -= 1;
+            }
         }
     }
 }
